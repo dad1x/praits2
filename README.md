@@ -1,2 +1,3 @@
 # praits2
-its2
+
+ITS 2. Praktikum Notes
