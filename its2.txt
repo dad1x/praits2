@@ -1,0 +1,107 @@
+SSH:
+start Apache: /etc/init.d/ apache2 start.
+restart Apache: /etc/init.d/ apache2 restart.
+stop Apache: /etc/init.d/apache2 stop . 5/5 – (3 votes)
+
+---------------a1
+
+ sudo apt-get update
+ sudo apt-get upgrade -y
+
+sudo apt-get install apache2
+
+sudo mkdir /var/www/html/admin
+
+sudo nano admin.html
+
+>> <!DOCTYPE html>
+<html>
+<TITLE> ITS </title>
+<body>
+
+<h1>HALLO ADMIN</h1>
+
+</body>
+</html>
+
+---------------------a2
+
+sudo nano /etc/apache2/apache2.conf
+
+<Directory /var/www/>
+Options Indexes FollowSymLinks
+AllowOverride All   <--------- None -> All
+Require all granted
+</Directory>
+
+sudo htpasswd –c /etc/apache2/.htpasswd dada
+sudo nano /var/www/html/admin/.htaccess
+
+>> AuthType Basic 
+AuthName "Anmelden"
+AuthUserFile /etc/apache2/.htpasswd
+Require valid-user
+
+sudo service apache2 restart
+
+---> LOGIN user + pw
+
+
+----------------a3 
+
+install wireshark
+sudo start
+
+credentials suchen, klartext -> oh nein
+
+---------------a4
+
+openssl req -new -days 365 -newkey rsa:4096 -sha512 -x509 -nodes -out /etc/ssl/certs/server1cert.pem -keyout /etc/ssl/certs/server1key.pem
+
+------------------a5
+
+sudo nano /etc/apache2/sites-available/000-default.conf
+
+<VirtualHost *:443> <-----
+
+ServerAdmin webmaster@localhost
+DocumentRoot /var/www/html
+ServerName ITS <----
+
+
+SSLEngine on	<------
+SSLCertificateFile /etc/ssl/certs/server1cert.pem 	<---------	
+SSLCertificateKeyFile /etc/ssl/certs/server1key.pem	<-------
+ErrorLog ${APACHE_LOG_DIR}/error.log
+CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+
+sudo sh -c "echo SSLRequireSSL >> /var/www/html/admin/.htaccess"
+
+--------a6
+
+sudo openssl genrsa -out client.key 4096
+
+sudo openssl req -new -key client.key -out client.req
+
+
+sudo openssl x509 -req -in client.req -CA localhost.crt -CAkey
+localhost.key -set_serial 101 -extensions client -days 365 -outform PEM
+-out client.crt
+
+??????????
+sudo openssl pkcs12 -export -inkey client.key -in client.crt -out
+client.p12
+sudo chmod 777 client.p12
+
+$ sudo nano /etc/apache2/sites-available/000-default.conf
+SSLCACertificateFile /etc/apache2/cert/client.crt
+SSLVerifyClient require
+SSLVerifyDepth 10
+
+
+sudo service apache2 restart
+
+------------a7 
+
+sniffer -> cant see any plain text
