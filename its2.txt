@@ -84,7 +84,9 @@ sudo openssl genrsa -out client.key 4096
 
 sudo openssl req -new -key client.key -out client.req
 
-[root@centos8-1 certs]# openssl x509 -req -in client.csr -passin file:mypass.enc -CA /root/tls/intermediate/certs/ca-chain-bundle.cert.pem -CAkey /root/tls/intermediate/private/intermediate.cakey.pem -out client.cert.pem -CAcreateserial -days 365 -sha256 -extfile client_cert_ext.cnf
+[root@centos8-1 certs]# openssl x509 -req -in client.csr -passin file:mypass.enc 
+-CA /root/tls/intermediate/certs/ca-chain-bundle.cert.pem -CAkey /root/tls/intermediate/private/intermediate.cakey.pem
+-out client.cert.pem -CAcreateserial -days 365 -sha256 -extfile client_cert_ext.cnf
 Signature ok
 subject=C = IN, ST = Karnataka, L = bengaluru, O = GoLinuxCloud, OU = R&D, CN = centos8-2, emailAddress = admin@golinuxcloud.com
 Getting CA Private Key
