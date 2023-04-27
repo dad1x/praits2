@@ -1,7 +1,7 @@
 SSH:
-start Apache: /etc/init.d/ apache2 start.
-restart Apache: /etc/init.d/ apache2 restart.
-stop Apache: /etc/init.d/apache2 stop . 5/5 – (3 votes)
+start Apache: /etc/init.d/ apache2 start
+restart Apache: /etc/init.d/ apache2 restart
+stop Apache: /etc/init.d/apache2 stop 
 
 ---------------a1
 
