@@ -60,7 +60,9 @@ openssl req -new -days 365 -newkey rsa:4096 -sha512 -x509 -nodes -out /etc/ssl/c
 
 ------------------a5
 
-sudo nano /etc/apache2/sites-available/000-default.conf
+sudo nano /etc/apache2/sites-available/
+
+SSL config
 
 <VirtualHost *:443> <-----
 
